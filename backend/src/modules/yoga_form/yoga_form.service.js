@@ -9,6 +9,10 @@ import { YOGA_FORM_MODEL } from "./yoga_form.model.js";
   async getAll() {
     return await YOGA_FORM_MODEL.find().sort({ createdAt: -1 });
   }
+
+  async delete(id){
+    return await YOGA_FORM_MODEL.findByIdAndDelete(id);
+  }
 }
 
 export default new Yoga_formService();

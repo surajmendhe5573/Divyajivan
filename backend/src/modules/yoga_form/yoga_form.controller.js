@@ -23,4 +23,15 @@ export default class Yoga_formController {
       next(err);
     }
   };
+
+  delete = async (req, res, next) => {
+    try {
+       const form = await this.yoga_formService.delete(req.params.id);
+       if(!form)  return res.fail("Form not found");
+
+       res.success("Form deleted successfully", statusCode.OK);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
