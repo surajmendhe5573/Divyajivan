@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const yogaFormSchema = new mongoose.Schema({
+  salutation: { type: String, enum: ["Mr", "Mrs", "Miss", "Ms", "Dr", "Other"], required: true},
   name: { type: String, required: true },
   address:{ type: String },
   phone: {
@@ -48,7 +49,7 @@ const yogaFormSchema = new mongoose.Schema({
       paymentDate: { type: Date },
       transactionId: { type: String },
     },
-    
+
     status: { type: String, default: "Submitted", enum: ["Submitted", "Under Review", "Approved", "Rejected"]},  
 
 }, {timestamps:true});
