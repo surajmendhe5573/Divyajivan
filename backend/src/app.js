@@ -8,8 +8,7 @@ import helmet from 'helmet';
 import { responseFormatter } from './middlewares/default/responseFormater.js';
 import connectDB from './config/db.js';
 
-import contactFormRoute from './modules/contact_form/contact_form.routes.js';
-import admissionFormRoute from './modules/admission_form/admission_form.routes.js';
+import yogaFormRoute from './modules/yoga_form/yoga_form.routes.js';
 
 import compression from 'compression';
 
@@ -30,8 +29,7 @@ app.get('/', (req, res) => {
      res.send('Server is running!');
 })
 
-app.use('/api/v1/contact-form', contactFormRoute);
-app.use('/api/v1/admission-form', admissionFormRoute);
+app.use('/api/v1/yoga-form', yogaFormRoute);
 
 app.use(notFound);
 app.use(errorHandler);
