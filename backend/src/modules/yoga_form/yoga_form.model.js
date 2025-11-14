@@ -4,30 +4,30 @@ const yogaFormSchema = new mongoose.Schema({
   name: { type: String, required: true },
   address:{ type: String },
   phone: {
-    residence: String,
-    office: String,
-    mobile: String,
-    email: String
-  },
-  birthDate: Date,
+  residence: { type: String },
+  office: { type: String },
+  mobile: { type: String },
+  email: { type: String },
+},
+  birthDate: { type: Date },
   sex: { type: String, enum: ["Male", "Female"] },
-  maritalStatus: String,
-  education: String,
-  profession: String,
+  maritalStatus: { type: String },
+  education: { type: String },
+  profession: { type: String },
   languagesKnown: [String],
   hobbies: [String],
-  previousYogaKnowledge: String,
-  teachingExperience: String,
+  previousYogaKnowledge: { type: String },
+  teachingExperience: { type: String },
 
   anyAddiction: {
     hasAddiction: { type: Boolean, default: false },
-    addictionDetails: String
+    addictionDetails:{ type: String },
   },
 
   illness: {
     hasIllness: { type: Boolean, default: false },
-    illnessDetails: String,
-    treatmentDetails: String, 
+    illnessDetails: { type: String },
+    treatmentDetails: { type: String },
   },
 
   spiritualGuru: {
@@ -48,6 +48,7 @@ const yogaFormSchema = new mongoose.Schema({
       paymentDate: { type: Date },
       transactionId: { type: String },
     },
+    
     status: { type: String, default: "Submitted", enum: ["Submitted", "Under Review", "Approved", "Rejected"]},  
 
 }, {timestamps:true});
