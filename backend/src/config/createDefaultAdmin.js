@@ -10,7 +10,7 @@ const createDefaultAdmin = async () => {
       return;
     }
 
-    const hashedPassword = await bcrypt.hash("Admin@12345", 10);
+    const hashedPassword = await bcrypt.hash("adMin@1811", 10);
 
     await USER_MODEL.create({
       username: "superadmin",
@@ -21,7 +21,7 @@ const createDefaultAdmin = async () => {
 
     console.log("🔥 Default Admin Created Successfully:");
     console.log("Username: superadmin");
-    console.log("Password: Admin@12345");
+    console.log("Password: adMin@1811");
 
   } catch (err) {
     console.error("Failed to create default admin:", err);
