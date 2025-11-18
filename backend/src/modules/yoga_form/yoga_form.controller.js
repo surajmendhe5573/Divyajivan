@@ -20,49 +20,69 @@ export default class Yoga_formController {
   }
 
   create = async (req, res, next) => {
-  try {
-    const data = await this.yoga_formService.create(req.body);
+    try {
+      const data = await this.yoga_formService.create(req.body);
 
-    const userEmail = data.phone?.email?.trim();
-    const userName = data.name;
-    
-    const pdfBuffer = req.file?.buffer;
+      const pdfBuffer = req.file?.buffer;
 
-    // SEND EMAIL TO USER ONLY
-    if (userEmail) {
-      await this.transporter.sendMail({
-        from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
-        to: userEmail,
-        subject: "We have received your application",
-        html: `
-          <p>Dear <b>${userName}</b>,</p>
-          <p>Thank you for applying for the 45th Yoga Teacher Training Course.</p>
-          <p>We have successfully received your application form.</p>
-          <p>Our team will contact you soon.</p>
-          <br/>
-          <p>Regards,<br/>Sri Divya Jivan Sanskrutik Sangh <br/>Ahmedabad</p>
-        `,
-        attachments: pdfBuffer ? [
-          {
-            filename: "your-application.pdf",
-            content: pdfBuffer,
-          }
-        ] : []
-      });
-    } else {
-      console.log("User email not provided — skipping email sending.");
+      const adminEmail = process.env.ADMIN_EMAIL?.trim();
+      const userEmail = data.phone?.email?.trim();
+
+      console.log("ADMIN_EMAIL =", adminEmail);
+      console.log("USER_EMAIL =", userEmail);
+
+      if (!adminEmail) {
+        console.log("ADMIN_EMAIL not found in .env");
+      } else if (pdfBuffer) {
+        await this.transporter.sendMail({
+          from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
+          to: adminEmail,
+          subject: "New Yoga Registration Form Submitted",
+          text: `
+A new Yoga Application Form has been submitted.
+
+Name: ${data.name}
+Email: ${data.phone?.email}
+Mobile: ${data.phone?.mobile}
+          `,
+          attachments: [
+            {
+              filename: "application.pdf",
+              content: pdfBuffer
+            }
+          ]
+        });
+      }
+
+      // SEND EMAIL TO APPLICANT 
+      if (userEmail) {
+        await this.transporter.sendMail({
+          from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
+          to: userEmail,
+          subject: "We have received your application",
+          html: `
+            <p>Dear <b>${data.name}</b>,</p>
+            <p>Thank you for applying for the 45th Yoga Teacher Training Course.</p>
+            <p>We have successfully received your application form.</p>
+            <p>Our team will contact you soon.</p>
+            <br/>
+            <p>Regards,<br/>Sri Divya Jivan Sanskrutik Sangh</p>
+          `
+        });
+      } else {
+        console.log("User email not provided — skipping user email sending.");
+      }
+
+      return res.success(
+        "Application submitted successfully",
+        data,
+        statusCode.CREATED
+      );
+
+    } catch (err) {
+      next(err);
     }
-
-    return res.success(
-      "Application submitted successfully",
-      data,
-      statusCode.CREATED
-    );
-
-  } catch (err) {
-    next(err);
-  }
-};
+  };
 
   getAll = async (req, res, next) => {
     try {
