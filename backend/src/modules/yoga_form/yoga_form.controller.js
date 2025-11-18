@@ -36,9 +36,9 @@ export default class Yoga_formController {
         subject: "We have received your application",
         html: `
           <p>Dear <b>${userName}</b>,</p>
-          <p>Thank you for submitting your application.</p>
-          <p>We have successfully received your form.</p>
-          <p>Our team will contact you shortly.</p>
+          <p>Thank you for applying for the 45th Yoga Teacher Training Course.</p>
+          <p>We have successfully received your application form.</p>
+          <p>Our team will contact you soon.</p>
           <br/>
           <p>Regards,<br/>Sri Divya Jivan Sanskrutik Sangh <br/>Ahmedabad</p>
         `,
