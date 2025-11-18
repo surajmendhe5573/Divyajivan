@@ -19,11 +19,80 @@ export default class Yoga_formController {
     });
   }
 
-  create = async (req, res, next) => {
+//   create = async (req, res, next) => {
+//     try {
+//       const data = await this.yoga_formService.create(req.body);
+
+//       const pdfBuffer = req.file?.buffer;
+
+//       const adminEmail = process.env.ADMIN_EMAIL?.trim();
+//       const userEmail = data.phone?.email?.trim();
+
+//       console.log("ADMIN_EMAIL =", adminEmail);
+//       console.log("USER_EMAIL =", userEmail);
+
+//       if (!adminEmail) {
+//   console.log("ADMIN_EMAIL not found in .env");
+// } else if (pdfBuffer) {
+//   await this.transporter.sendMail({
+//     from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
+//     to: adminEmail,
+//     subject: "New Yoga Teacher Training Course Application Received",
+//     text: `
+// A new Yoga Teacher Training Course application has been submitted.
+
+// Applicant Details:
+// -------------------------
+// Name       : ${data.salutation ? data.salutation + " " : ""}${data.name}
+// Email      : ${data.phone?.email || "Not Provided"}
+// Mobile     : ${data.phone?.mobile || "Not Provided"}
+// Address    : ${data.address || "Not Provided"}
+
+// The filled application PDF is attached with this email.
+
+// Please review the application at your earliest convenience.
+//     `.trim(),
+//     attachments: [
+//       {
+//         filename: "application.pdf",
+//         content: pdfBuffer,
+//       }
+//     ]
+//   });
+// }
+
+//       // SEND EMAIL TO APPLICANT 
+//       if (userEmail) {
+//         await this.transporter.sendMail({
+//           from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
+//           to: userEmail,
+//           subject: "We have received your application",
+//           html: `
+//             <p>Dear <b>${data.name}</b>,</p>
+//             <p>Thank you for applying for the 45th Yoga Teacher Training Course.</p>
+//             <p>We have successfully received your application form.</p>
+//             <p>Our team will contact you soon.</p>
+//             <br/>
+//            <p>Regards,<br/>Sri Divya Jivan Sanskrutik Sangh <br/>Ahmedabad</p>
+//           `
+//         });
+//       } else {
+//         console.log("User email not provided — skipping user email sending.");
+//       }
+
+//       return res.success(
+//         "Application submitted successfully",
+//         data,
+//         statusCode.CREATED
+//       );
+
+//     } catch (err) {
+//       next(err);
+//     }
+//   };
+create = async (req, res, next) => {
     try {
       const data = await this.yoga_formService.create(req.body);
-
-      const pdfBuffer = req.file?.buffer;
 
       const adminEmail = process.env.ADMIN_EMAIL?.trim();
       const userEmail = data.phone?.email?.trim();
@@ -31,14 +100,15 @@ export default class Yoga_formController {
       console.log("ADMIN_EMAIL =", adminEmail);
       console.log("USER_EMAIL =", userEmail);
 
+      //  SEND EMAIL TO ADMIN (NO PDF)
       if (!adminEmail) {
-  console.log("ADMIN_EMAIL not found in .env");
-} else if (pdfBuffer) {
-  await this.transporter.sendMail({
-    from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
-    to: adminEmail,
-    subject: "New Yoga Teacher Training Course Application Received",
-    text: `
+        console.log("ADMIN_EMAIL not found in .env");
+      } else {
+        await this.transporter.sendMail({
+          from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
+          to: adminEmail,
+          subject: "New Yoga Teacher Training Course Application Received",
+          text: `
 A new Yoga Teacher Training Course application has been submitted.
 
 Applicant Details:
@@ -48,20 +118,12 @@ Email      : ${data.phone?.email || "Not Provided"}
 Mobile     : ${data.phone?.mobile || "Not Provided"}
 Address    : ${data.address || "Not Provided"}
 
-The filled application PDF is attached with this email.
-
 Please review the application at your earliest convenience.
-    `.trim(),
-    attachments: [
-      {
-        filename: "application.pdf",
-        content: pdfBuffer,
+          `.trim(),
+        });
       }
-    ]
-  });
-}
 
-      // SEND EMAIL TO APPLICANT 
+      //  SEND EMAIL TO APPLICANT — CONFIRMATION EMAIL
       if (userEmail) {
         await this.transporter.sendMail({
           from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
@@ -73,7 +135,7 @@ Please review the application at your earliest convenience.
             <p>We have successfully received your application form.</p>
             <p>Our team will contact you soon.</p>
             <br/>
-            <p>Regards,<br/>Sri Divya Jivan Sanskrutik Sangh</p>
+            <p>Regards,<br/>Sri Divya Jivan Sanskrutik Sangh <br/>Ahmedabad</p>
           `
         });
       } else {
