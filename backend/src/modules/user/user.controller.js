@@ -16,23 +16,16 @@ export default class UserController {
     }
   };
 
-  register = async (req, res, next) => {
-    try {
-      const { username, email, password, role } = req.body;
-      const user = await this.userService.register({ username, email, password, role });
-      return res.success("User created successfully", user, statusCode.CREATED);
-    } catch (err) {
-      next(err);
-    }
-  };
-
   login = async (req, res, next) => {
-    try {
-      const { email, password } = req.body;
-      const result = await this.userService.login({ email, password });
-      return res.success("Login successful", result, statusCode.OK);
-    } catch (err) {
-      next(err);
-    }
-  };
+  try {
+    const { username, password } = req.body;
+
+    const result = await this.userService.login({ username, password });
+
+    return res.success("Login successful", result, statusCode.OK);
+  } catch (err) {
+    next(err);
+  }
+};
+
 }

@@ -32,27 +32,34 @@ export default class Yoga_formController {
       console.log("USER_EMAIL =", userEmail);
 
       if (!adminEmail) {
-        console.log("ADMIN_EMAIL not found in .env");
-      } else if (pdfBuffer) {
-        await this.transporter.sendMail({
-          from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
-          to: adminEmail,
-          subject: "New Yoga Registration Form Submitted",
-          text: `
-A new Yoga Application Form has been submitted.
+  console.log("ADMIN_EMAIL not found in .env");
+} else if (pdfBuffer) {
+  await this.transporter.sendMail({
+    from: `"Yoga Institute" <${process.env.EMAIL_USER}>`,
+    to: adminEmail,
+    subject: "New Yoga Teacher Training Course Application Received",
+    text: `
+A new Yoga Teacher Training Course application has been submitted.
 
-Name: ${data.name}
-Email: ${data.phone?.email}
-Mobile: ${data.phone?.mobile}
-          `,
-          attachments: [
-            {
-              filename: "application.pdf",
-              content: pdfBuffer
-            }
-          ]
-        });
+Applicant Details:
+-------------------------
+Name       : ${data.salutation ? data.salutation + " " : ""}${data.name}
+Email      : ${data.phone?.email || "Not Provided"}
+Mobile     : ${data.phone?.mobile || "Not Provided"}
+Address    : ${data.address || "Not Provided"}
+
+The filled application PDF is attached with this email.
+
+Please review the application at your earliest convenience.
+    `.trim(),
+    attachments: [
+      {
+        filename: "application.pdf",
+        content: pdfBuffer,
       }
+    ]
+  });
+}
 
       // SEND EMAIL TO APPLICANT 
       if (userEmail) {

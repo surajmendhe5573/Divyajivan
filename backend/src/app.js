@@ -12,6 +12,7 @@ import yogaFormRoute from './modules/yoga_form/yoga_form.routes.js';
 import userRoute from './modules/user/user.routes.js';
 
 import compression from 'compression';
+import createDefaultAdmin from "./config/createDefaultAdmin.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(compression());
 app.use(express.static("public")); 
 
 connectDB();
+createDefaultAdmin();
 
 app.use(responseFormatter);
 app.get('/', (req, res) => {
