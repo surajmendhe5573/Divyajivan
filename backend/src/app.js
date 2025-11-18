@@ -9,6 +9,7 @@ import { responseFormatter } from './middlewares/default/responseFormater.js';
 import connectDB from './config/db.js';
 
 import yogaFormRoute from './modules/yoga_form/yoga_form.routes.js';
+import userRoute from './modules/user/user.routes.js';
 
 import compression from 'compression';
 
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/v1/yoga-form', yogaFormRoute);
+app.use('/api/v1/user', userRoute);
 
 app.use(notFound);
 app.use(errorHandler);
