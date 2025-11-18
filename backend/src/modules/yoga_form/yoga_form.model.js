@@ -11,7 +11,7 @@ const yogaFormSchema = new mongoose.Schema({
   email: { type: String },
 },
   birthDate: { type: Date },
-  sex: { type: String, enum: ["Male", "Female"] },
+  sex: { type: String, enum: ["Male", "Female", "Other"] },
   maritalStatus: { type: String },
   education: { type: String },
   profession: { type: String },
